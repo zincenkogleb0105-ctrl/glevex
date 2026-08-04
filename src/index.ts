@@ -1,11 +1,7 @@
 import express, { Request, Response } from 'express';
-import path from 'path';
 const app = express();
 
 app.use(express.json());
-
-// Открываем доступ к папке public, чтобы загружался наш красивый HTML
-app.use(express.static(path.join(__dirname, '../public')));
 
 interface Game {
   id: number;
@@ -24,12 +20,7 @@ const gamesData: Game[] = [
   { id: 6, title: "Speed Run 5", rating: "91%", online: "7.1K", icon: "⚡" }
 ];
 
-// Главная страница теперь просто отдает созданный HTML-файл
-app.get('/', (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
-
-// API эндпоинт, откуда фронтенд забирает данные об играх
+// Оставляем только выдачу данных для фронтенда
 app.get('/api/games', (req: Request, res: Response) => {
   res.json(gamesData);
 });
