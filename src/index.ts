@@ -20,18 +20,19 @@ const gamesData: Game[] = [
   { id: 6, title: "Speed Run 5", rating: "91%", online: "7.1K", icon: "⚡" }
 ];
 
-// Главная страница отдает полноценный HTML напрямую, без поиска файлов на диске
 app.get('/', (req: Request, res: Response) => {
+  // Генерируем карточки
   const gameCards = gamesData.map(game => `
-    <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition cursor-pointer" onclick="playGame('\${game.title}')">
-      <div class="aspect-square bg-gray-700 flex items-center justify-center text-5xl">\${game.icon}</div>
+    <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition cursor-pointer" onclick="playGame('${game.title}')">
+      <div class="aspect-square bg-gray-700 flex items-center justify-center text-5xl">${game.icon}</div>
       <div class="p-3">
-        <h3 class="font-bold truncate text-sm">\${game.title}</h3>
-        <p class="text-xs text-gray-400 mt-1">👍 \${game.rating} • 👥 \${game.online}</p>
+        <h3 class="font-bold truncate text-sm">${game.title}</h3>
+        <p class="text-xs text-gray-400 mt-1">👍 ${game.rating} • 👥 ${game.online}</p>
       </div>
     </div>
   `).join('');
 
+  // Отдаем HTML (здесь убран слэш перед gameCards)
   res.send(`
     <!DOCTYPE html>
     <html lang="ru">
@@ -54,7 +55,7 @@ app.get('/', (req: Request, res: Response) => {
       <main class="p-8 max-w-7xl mx-auto">
         <h1 class="text-3xl font-bold mb-6">Популярные игры</h1>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
-          \${gameCards}
+          ${gameCards}
         </div>
       </main>
 
