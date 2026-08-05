@@ -174,37 +174,47 @@
     </div>
   </footer>
 
-  <!-- Модальное окно инструкций скачивания -->
-  <div id="download-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-gray-900 border border-gray-800 p-6 sm:p-8 rounded-2xl w-full max-w-lg shadow-2xl relative space-y-6">
-      <button onclick="closeDownloadModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white text-2xl font-bold">&times;</button>
+  <!-- Модальное окно Лаунчера (Разблокировано) -->
+<div id="launcher-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+  <div class="bg-gray-900 border border-gray-800 p-6 sm:p-8 rounded-2xl w-full max-w-lg shadow-2xl relative space-y-6">
+    <button onclick="closeLauncherModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white text-2xl font-bold">&times;</button>
 
-      <div class="text-center space-y-2">
-        <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold rounded-full uppercase tracking-wider">
-          <span>🚀</span> Как запустить 3D Demo
-        </div>
-        <h3 class="text-2xl font-extrabold text-white">Инструкция по запуску</h3>
+    <!-- Шапка модалки -->
+    <div class="text-center space-y-2">
+      <div class="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/30 text-green-400 text-xs font-bold rounded-full uppercase tracking-wider">
+        <span>🟢</span> Релиз доступен
       </div>
-
-      <div class="space-y-3 text-sm text-gray-300 bg-gray-800/60 p-4 rounded-xl border border-gray-800 leading-relaxed">
-        <p>1. Нажмите кнопку <b>«Скачать Плейс Demo (.zip)»</b>.</p>
-        <p>2. Распакуйте архив в любую папку на ПК.</p>
-        <p>3. Запустите файл <b><code>GLEVEX_Demo.exe</code></b>.</p>
-        <div class="border-t border-gray-700/60 pt-2 text-xs text-gray-400 space-y-1">
-          <p><b>Управление в игре:</b></p>
-          <p>• <b>W / A / S / D</b> — Движение в 3D</p>
-          <p>• <b>Пробел</b> — Прыжок</p>
-          <p>• <b>Left Shift</b> — Включить Shift Lock</p>
-          <p>• <b>Колесико мыши</b> — Приближение / Отдаление камеры</p>
-        </div>
-      </div>
-
-      <a href="/downloads/GLEVEX_Demo_v1.0.zip" download onclick="closeDownloadModal()" 
-        class="w-full bg-red-600 hover:bg-red-500 py-3.5 rounded-xl font-bold text-center text-white transition block shadow-lg shadow-red-600/30">
-        📥 Скачать ZIP-архив сейчас
-      </a>
+      <h3 class="text-2xl font-extrabold text-white">Лаунчер GLEVEX Client</h3>
+      <p class="text-xs text-gray-400">Быстрый доступ к играм и 3D-плейсу Demo</p>
     </div>
+
+    <!-- Фичи -->
+    <div class="grid grid-cols-3 gap-3">
+      <div class="bg-gray-800/60 border border-gray-800 p-3 rounded-xl text-center space-y-1">
+        <div class="text-2xl">⚡</div>
+        <div class="text-xs font-bold text-gray-200">Быстрый старт</div>
+      </div>
+      <div class="bg-gray-800/60 border border-gray-800 p-3 rounded-xl text-center space-y-1">
+        <div class="text-2xl">🛡️</div>
+        <div class="text-xs font-bold text-gray-200">G-Guard</div>
+      </div>
+      <div class="bg-gray-800/60 border border-gray-800 p-3 rounded-xl text-center space-y-1">
+        <div class="text-2xl">🔄</div>
+        <div class="text-xs font-bold text-gray-200">Авто-патчи</div>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-center py-2 text-xs text-gray-300 font-semibold border-y border-gray-800/80">
+      <span>💻 Поддержка: Windows 10 / 11 (64-bit)</span>
+    </div>
+
+    <!-- Активная кнопка скачивания ZIP -->
+    <a href="/downloads/GLEVEX_Demo_v1.0.zip" download 
+      class="w-full bg-red-600 hover:bg-red-500 py-3.5 rounded-xl font-bold text-center text-white transition block shadow-lg shadow-red-600/30">
+      📥 Скачать GLEVEX Client (.zip)
+    </a>
   </div>
+</div>
 
   <!-- Модальное окно авторизации -->
   <div id="auth-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
