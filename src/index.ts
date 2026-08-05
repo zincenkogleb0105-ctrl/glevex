@@ -458,5 +458,3 @@ app.get('/', (_req: Request, res: Response) => {
 });
 
 export default app;
-
-export default app;
