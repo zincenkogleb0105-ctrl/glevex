@@ -103,18 +103,18 @@ app.get('/', (_req: Request, res: Response) => {
 
           <!-- Навигация и кнопки -->
           <div class="flex items-center gap-3">
-            <!-- Кнопка Лаунчера -->
-            <button onclick="openLauncherModal()" class="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 hover:text-white transition shadow-sm">
+            <!-- Кнопка Скачивания 3D Demo -->
+            <a href="/downloads/GLEVEX_Demo_v1.0.zip" download class="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/30 transition">
               <span>📥</span>
-              <span class="hidden sm:inline">Лаунчер</span>
-            </button>
+              <span class="hidden sm:inline">Скачать Demo</span>
+            </a>
 
             <!-- Кнопки Входа / Профиль -->
             <div id="auth-buttons" class="flex items-center gap-2 sm:gap-3">
               <button onclick="openModal('login')" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800 transition">
                 Войти
               </button>
-              <button onclick="openModal('reg')" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/30 transition">
+              <button onclick="openModal('reg')" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-gray-800 hover:bg-gray-700 text-white transition">
                 Регистрация
               </button>
             </div>
@@ -136,23 +136,22 @@ app.get('/', (_req: Request, res: Response) => {
       <!-- Главный Контент -->
       <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full space-y-10">
         
-        <!-- Hero Баннер Платформы -->
-        <section class="relative rounded-2xl overflow-hidden bg-gradient-to-r from-red-950/60 via-purple-950/30 to-gray-900 border border-gray-800 p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
+        <!-- Hero Баннер 3D Плейса Demo -->
+        <section class="relative rounded-2xl overflow-hidden bg-gradient-to-r from-red-950/70 via-purple-950/40 to-gray-900 border border-gray-800 p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
           <div class="space-y-4 max-w-xl text-center md:text-left">
-            <span class="inline-block px-3 py-1 bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold rounded-full uppercase tracking-wider">
-              🚀 Скоро открытие
+            <span class="inline-block px-3 py-1 bg-green-500/20 border border-green-500/40 text-green-400 text-xs font-bold rounded-full uppercase tracking-wider">
+              🟢 Релиз доступен
             </span>
-            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Добро пожаловать в GLEVEX</h1>
-            <p class="text-gray-400 text-sm sm:text-base leading-relaxed">
-              Игровая платформа нового поколения. Зарегистрируйтесь прямо сейчас, чтобы первым получить доступ к закрытому альфа-тесту!
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">GLEVEX Place: Demo</h1>
+            <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+              Автономный 3D-плейс в стиле Roblox на C++! Пройдите Obby, собирайте монеты и используйте Shift Lock.
             </p>
             <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2">
-              <button onclick="openModal('reg')" class="px-6 py-3 bg-red-600 hover:bg-red-500 font-bold rounded-xl shadow-xl shadow-red-600/30 transition transform hover:-translate-y-0.5">
-                Создать аккаунт
-              </button>
-              <button onclick="openLauncherModal()" class="px-6 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 font-bold rounded-xl transition flex items-center gap-2">
-                <span>📥 Скачать лаунчер</span>
-                <span class="text-[10px] bg-red-500/20 text-red-400 border border-red-500/30 px-1.5 py-0.5 rounded-full uppercase">Скоро</span>
+              <a href="/downloads/GLEVEX_Demo_v1.0.zip" download class="px-6 py-3 bg-red-600 hover:bg-red-500 font-bold rounded-xl shadow-xl shadow-red-600/30 transition transform hover:-translate-y-0.5 text-white flex items-center gap-2">
+                <span>📥 Скачать Плейс Demo (.zip)</span>
+              </a>
+              <button onclick="openLauncherModal()" class="px-6 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 font-bold rounded-xl transition">
+                <span>ℹ️ О лаунчере</span>
               </button>
             </div>
           </div>
@@ -164,12 +163,12 @@ app.get('/', (_req: Request, res: Response) => {
         <!-- Фильтры категорий -->
         <section class="space-y-4">
           <div class="md:hidden">
-            <input type="text" id="search-input-mobile" oninput="filterGamesMobile()" placeholder="Поиск по платформам..." 
+            <input type="text" id="search-input-mobile" oninput="filterGamesMobile()" placeholder="Поиск..." 
               class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-red-500">
           </div>
 
           <div class="flex items-center justify-between flex-wrap gap-4 border-b border-gray-800/80 pb-4">
-            <h2 class="text-2xl font-bold tracking-tight">Каталог игр</h2>
+            <h2 class="text-2xl font-bold tracking-tight">Каталог плейсов</h2>
             
             <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 no-scrollbar">
               <button onclick="setCategory('all')" data-cat="all" class="cat-btn px-4 py-1.5 rounded-lg text-xs font-bold bg-red-600 text-white transition">Все</button>
@@ -180,9 +179,27 @@ app.get('/', (_req: Request, res: Response) => {
           </div>
         </section>
 
-        <!-- Пустой каталог -->
-        <section id="games-grid" class="w-full">
-          <!-- Загружается JS -->
+        <!-- Сетка плейсов -->
+        <section id="games-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="group bg-gray-900 border border-gray-800 hover:border-red-500/50 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+            <div class="h-48 bg-gradient-to-br from-red-900/40 via-purple-900/20 to-gray-900 flex items-center justify-center text-7xl relative group-hover:scale-105 transition-transform duration-300">
+              <span class="absolute top-3 right-3 bg-red-600 text-[10px] font-black uppercase px-2.5 py-1 rounded-full text-white shadow-md">NEW 3D</span>
+              🎮
+            </div>
+            <div class="p-5 space-y-3 bg-gray-900">
+              <div class="flex items-center justify-between">
+                <h3 class="font-bold text-lg text-gray-100 group-hover:text-red-400 transition-colors">GLEVEX: Place Demo</h3>
+                <span class="text-xs text-green-400 font-semibold">🟢 V1.0</span>
+              </div>
+              <p class="text-xs text-gray-400 leading-relaxed">3D-плейс на C++: 3D Obby, паркур, монеты, Shift Lock и физика.</p>
+              <div class="pt-2 flex items-center justify-between border-t border-gray-800">
+                <span class="text-xs text-gray-500">Платформа: Windows</span>
+                <a href="/downloads/GLEVEX_Demo_v1.0.zip" download class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white text-xs font-bold rounded-xl transition shadow-md shadow-red-600/20">
+                  Скачать (.zip)
+                </a>
+              </div>
+            </div>
+          </div>
         </section>
 
       </main>
@@ -223,145 +240,54 @@ app.get('/', (_req: Request, res: Response) => {
         </div>
       </div>
 
-      <!-- Модальное окно Лаунчера (Скоро запуск) -->
+      <!-- Модальное окно Лаунчера (АКТИВНОЕ СКАЧИВАНИЕ) -->
       <div id="launcher-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-gray-900 border border-gray-800 p-6 sm:p-8 rounded-2xl w-full max-w-lg shadow-2xl relative space-y-6">
           <button onclick="closeLauncherModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white text-2xl font-bold">&times;</button>
 
-          <!-- Шапка модалки -->
           <div class="text-center space-y-2">
-            <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold rounded-full uppercase tracking-wider">
-              <span>⏳</span> В разработке
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/30 text-green-400 text-xs font-bold rounded-full uppercase tracking-wider">
+              <span>🟢</span> Релиз доступен
             </div>
             <h3 class="text-2xl font-extrabold text-white">Лаунчер GLEVEX Client</h3>
-            <p class="text-xs text-gray-400">Быстрый доступ к играм, встроенный античит и авто-обновления</p>
+            <p class="text-xs text-gray-400">Быстрый доступ к играм и 3D-плейсу Demo</p>
           </div>
 
-          <!-- Фичи будущей версии -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="grid grid-cols-3 gap-3">
             <div class="bg-gray-800/60 border border-gray-800 p-3 rounded-xl text-center space-y-1">
               <div class="text-2xl">⚡</div>
               <div class="text-xs font-bold text-gray-200">Мгновенный старт</div>
-              <div class="text-[10px] text-gray-500">Запуск за 1 секунду</div>
             </div>
             <div class="bg-gray-800/60 border border-gray-800 p-3 rounded-xl text-center space-y-1">
               <div class="text-2xl">🛡️</div>
-              <div class="text-xs font-bold text-gray-200">Античит G-Guard</div>
-              <div class="text-[10px] text-gray-500">Честная игра</div>
+              <div class="text-xs font-bold text-gray-200">G-Guard</div>
             </div>
             <div class="bg-gray-800/60 border border-gray-800 p-3 rounded-xl text-center space-y-1">
               <div class="text-2xl">🔄</div>
               <div class="text-xs font-bold text-gray-200">Авто-патчи</div>
-              <div class="text-[10px] text-gray-500">Без ручных скачиваний</div>
             </div>
           </div>
 
-          <!-- Поддерживаемые платформы (Только Windows) -->
           <div class="flex items-center justify-center py-2 text-xs text-gray-300 font-semibold border-y border-gray-800/80">
-            <span class="flex items-center gap-2">💻 Поддержка: Windows 10 / 11 (64-bit)</span>
+            <span>💻 Поддержка: Windows 10 / 11 (64-bit)</span>
           </div>
 
-          <!-- Заблокированная кнопка скачивания -->
-          <div class="space-y-3">
-            <button disabled class="w-full bg-gray-800 border border-gray-700 text-gray-400 cursor-not-allowed py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2">
-              <span>🔒</span>
-              <span>Загрузка недоступна (Ожидайте релиз)</span>
-            </button>
-            <p class="text-[11px] text-center text-gray-500">
-              Зарегистрируйте аккаунт на сайте, чтобы получить уведомление о старте альфа-теста!
-            </p>
-          </div>
+          <!-- Разблокированная активная кнопка скачивания -->
+          <a href="/downloads/GLEVEX_Demo_v1.0.zip" download 
+            class="w-full bg-red-600 hover:bg-red-500 py-3.5 rounded-xl font-bold text-center text-white transition block shadow-lg shadow-red-600/30">
+            📥 Скачать GLEVEX Client (.zip)
+          </a>
         </div>
       </div>
 
       <!-- Клиентский скрипт -->
       <script>
-        let allGames = [];
-        let currentCategory = 'all';
         let currentAuthMode = 'reg';
 
         document.addEventListener('DOMContentLoaded', () => {
-          loadGames();
           checkSession();
         });
 
-        async function loadGames() {
-          try {
-            const res = await fetch('/api/games');
-            allGames = await res.json();
-            renderGames(allGames);
-          } catch (e) {
-            renderGames([]);
-          }
-        }
-
-        function renderGames(games) {
-          const grid = document.getElementById('games-grid');
-          
-          if (!games || games.length === 0) {
-            grid.innerHTML = \`
-              <div class="flex flex-col items-center justify-center py-16 text-center space-y-3 bg-gray-900/40 border border-gray-800/80 rounded-2xl w-full">
-                <div class="text-6xl mb-2 animate-bounce">⚡</div>
-                <h3 class="text-xl font-bold text-gray-200">Игр пока нет</h3>
-                <p class="text-sm text-gray-500 max-w-sm">Платформа GLEVEX готовится к запуску. Скоро здесь появятся первые игры!</p>
-              </div>
-            \`;
-            return;
-          }
-
-          grid.className = "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6";
-          grid.innerHTML = games.map(game => \`
-            <div onclick="playGame('\${game.title}')" class="group bg-gray-900 border border-gray-800/80 hover:border-red-500/50 rounded-2xl overflow-hidden shadow-lg hover:shadow-red-500/10 transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between">
-              <div class="aspect-square bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-5xl relative group-hover:scale-105 transition-transform duration-300">
-                \${game.icon}
-              </div>
-              <div class="p-3.5 space-y-1 bg-gray-900">
-                <h3 class="font-bold text-sm text-gray-100 truncate group-hover:text-red-400 transition-colors">\${game.title}</h3>
-                <div class="flex items-center justify-between text-[11px] text-gray-400 font-medium">
-                  <span>👍 \${game.rating}</span>
-                  <span class="text-green-400">👥 \${game.online}</span>
-                </div>
-              </div>
-            </div>
-          \`).join('');
-        }
-
-        function filterGames() {
-          const query = (document.getElementById('search-input')?.value || '').toLowerCase();
-          const filtered = allGames.filter(g => {
-            const matchesCategory = currentCategory === 'all' || g.category === currentCategory;
-            const matchesQuery = g.title.toLowerCase().includes(query);
-            return matchesCategory && matchesQuery;
-          });
-          renderGames(filtered);
-        }
-
-        function filterGamesMobile() {
-          const query = (document.getElementById('search-input-mobile')?.value || '').toLowerCase();
-          const filtered = allGames.filter(g => g.title.toLowerCase().includes(query));
-          renderGames(filtered);
-        }
-
-        function setCategory(cat) {
-          currentCategory = cat;
-          document.querySelectorAll('.cat-btn').forEach(btn => {
-            if (btn.dataset.cat === cat) {
-              btn.className = 'cat-btn px-4 py-1.5 rounded-lg text-xs font-bold bg-red-600 text-white transition';
-            } else {
-              btn.className = 'cat-btn px-4 py-1.5 rounded-lg text-xs font-bold bg-gray-800 hover:bg-gray-700 text-gray-300 transition';
-            }
-          });
-          filterGames();
-        }
-
-        function resetFilters() {
-          currentCategory = 'all';
-          if(document.getElementById('search-input')) document.getElementById('search-input').value = '';
-          setCategory('all');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Модальное окно лаунчера
         function openLauncherModal() {
           document.getElementById('launcher-modal').classList.remove('hidden');
         }
@@ -370,7 +296,6 @@ app.get('/', (_req: Request, res: Response) => {
           document.getElementById('launcher-modal').classList.add('hidden');
         }
 
-        // Модальное окно входа / регистрации
         function openModal(mode) {
           currentAuthMode = mode;
           document.getElementById('auth-modal').classList.remove('hidden');
