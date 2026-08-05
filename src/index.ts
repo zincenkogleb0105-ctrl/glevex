@@ -256,11 +256,9 @@ app.get('/', (_req: Request, res: Response) => {
             </div>
           </div>
 
-          <!-- Поддерживаемые платформы -->
-          <div class="flex items-center justify-center gap-6 py-2 text-xs text-gray-400 border-y border-gray-800/80">
-            <span class="flex items-center gap-1.5">💻 Windows 10/11</span>
-            <span class="flex items-center gap-1.5">🍎 macOS</span>
-            <span class="flex items-center gap-1.5">🐧 Linux</span>
+          <!-- Поддерживаемые платформы (Только Windows) -->
+          <div class="flex items-center justify-center py-2 text-xs text-gray-300 font-semibold border-y border-gray-800/80">
+            <span class="flex items-center gap-2">💻 Поддержка: Windows 10 / 11 (64-bit)</span>
           </div>
 
           <!-- Заблокированная кнопка скачивания -->
