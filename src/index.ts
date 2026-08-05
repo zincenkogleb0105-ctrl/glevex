@@ -3,6 +3,9 @@ import express, { Request, Response } from 'express';
 const app = express();
 app.use(express.json());
 
+// Прямая ссылка на ваш файл Glevex.zip в GitHub Releases
+const RELEASE_DOWNLOAD_URL = "https://github.com/zincenkogleb0105-ctrl/glevex/releases/latest/download/Glevex.zip";
+
 // Хранилище пользователей в оперативной памяти сервера
 const users: Record<string, string> = {};
 
@@ -103,10 +106,10 @@ app.get('/', (_req: Request, res: Response) => {
 
           <!-- Навигация и кнопки -->
           <div class="flex items-center gap-3">
-            <!-- Кнопка Скачивания 3D Demo -->
-            <a href="/downloads/GLEVEX_Demo_v1.0.zip" download class="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/30 transition">
+            <!-- Кнопка Скачивания из GitHub Releases -->
+            <a href="${RELEASE_DOWNLOAD_URL}" target="_blank" class="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/30 transition">
               <span>📥</span>
-              <span class="hidden sm:inline">Скачать Demo</span>
+              <span class="hidden sm:inline">Скачать Glevex.zip</span>
             </a>
 
             <!-- Кнопки Входа / Профиль -->
@@ -147,8 +150,8 @@ app.get('/', (_req: Request, res: Response) => {
               Автономный 3D-плейс в стиле Roblox на C++! Пройдите Obby, собирайте монеты и используйте Shift Lock.
             </p>
             <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2">
-              <a href="/downloads/GLEVEX_Demo_v1.0.zip" download class="px-6 py-3 bg-red-600 hover:bg-red-500 font-bold rounded-xl shadow-xl shadow-red-600/30 transition transform hover:-translate-y-0.5 text-white flex items-center gap-2">
-                <span>📥 Скачать Плейс Demo (.zip)</span>
+              <a href="${RELEASE_DOWNLOAD_URL}" target="_blank" class="px-6 py-3 bg-red-600 hover:bg-red-500 font-bold rounded-xl shadow-xl shadow-red-600/30 transition transform hover:-translate-y-0.5 text-white flex items-center gap-2">
+                <span>📥 Скачать Glevex.zip</span>
               </a>
               <button onclick="openLauncherModal()" class="px-6 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 font-bold rounded-xl transition">
                 <span>ℹ️ О лаунчере</span>
@@ -194,8 +197,8 @@ app.get('/', (_req: Request, res: Response) => {
               <p class="text-xs text-gray-400 leading-relaxed">3D-плейс на C++: 3D Obby, паркур, монеты, Shift Lock и физика.</p>
               <div class="pt-2 flex items-center justify-between border-t border-gray-800">
                 <span class="text-xs text-gray-500">Платформа: Windows</span>
-                <a href="/downloads/GLEVEX_Demo_v1.0.zip" download class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white text-xs font-bold rounded-xl transition shadow-md shadow-red-600/20">
-                  Скачать (.zip)
+                <a href="${RELEASE_DOWNLOAD_URL}" target="_blank" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white text-xs font-bold rounded-xl transition shadow-md shadow-red-600/20">
+                  Скачать Glevex.zip
                 </a>
               </div>
             </div>
@@ -240,7 +243,7 @@ app.get('/', (_req: Request, res: Response) => {
         </div>
       </div>
 
-      <!-- Модальное окно Лаунчера (АКТИВНОЕ СКАЧИВАНИЕ) -->
+      <!-- Модальное окно Лаунчера -->
       <div id="launcher-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-gray-900 border border-gray-800 p-6 sm:p-8 rounded-2xl w-full max-w-lg shadow-2xl relative space-y-6">
           <button onclick="closeLauncherModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white text-2xl font-bold">&times;</button>
@@ -272,10 +275,10 @@ app.get('/', (_req: Request, res: Response) => {
             <span>💻 Поддержка: Windows 10 / 11 (64-bit)</span>
           </div>
 
-          <!-- Разблокированная активная кнопка скачивания -->
-          <a href="/downloads/GLEVEX_Demo_v1.0.zip" download 
+          <!-- Активная ссылка на GitHub Releases -->
+          <a href="${RELEASE_DOWNLOAD_URL}" target="_blank" 
             class="w-full bg-red-600 hover:bg-red-500 py-3.5 rounded-xl font-bold text-center text-white transition block shadow-lg shadow-red-600/30">
-            📥 Скачать GLEVEX Client (.zip)
+            📥 Скачать Glevex.zip (GitHub Release)
           </a>
         </div>
       </div>
