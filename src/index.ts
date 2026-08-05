@@ -6,7 +6,6 @@ app.use(express.json());
 // Хранилище пользователей в оперативной памяти сервера
 const users: Record<string, string> = {};
 
-// Список игр пока пустой (без тестовых игр)
 interface Game {
   id: number;
   title: string;
@@ -57,7 +56,7 @@ app.get('/', (_req: Request, res: Response) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>GLEVEX — Игровая Платформа</title>
       
-      <!-- Исправленный CDN Tailwind CSS -->
+      <!-- CDN Tailwind CSS -->
       <script src="https://cdn.tailwindcss.com"></script>
       <script>
         tailwind.config = {
@@ -94,7 +93,7 @@ app.get('/', (_req: Request, res: Response) => {
           </div>
 
           <!-- Поиск -->
-          <div class="flex-1 max-w-md hidden sm:block">
+          <div class="flex-1 max-w-md hidden md:block">
             <div class="relative">
               <input type="text" id="search-input" oninput="filterGames()" placeholder="Поиск по платформе..." 
                 class="w-full bg-gray-900 border border-gray-700/80 rounded-xl px-4 py-2 pl-10 text-sm text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition">
@@ -102,25 +101,35 @@ app.get('/', (_req: Request, res: Response) => {
             </div>
           </div>
 
-          <!-- Кнопки Входа / Профиль -->
-          <div id="auth-buttons" class="flex items-center gap-3">
-            <button onclick="openModal('login')" class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800 transition">
-              Войти
+          <!-- Навигация и кнопки -->
+          <div class="flex items-center gap-3">
+            <!-- Кнопка Лаунчера -->
+            <button onclick="openLauncherModal()" class="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 hover:text-white transition shadow-sm">
+              <span>📥</span>
+              <span class="hidden sm:inline">Лаунчер</span>
             </button>
-            <button onclick="openModal('reg')" class="px-4 py-2 rounded-xl text-sm font-semibold bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/30 transition">
-              Регистрация
-            </button>
+
+            <!-- Кнопки Входа / Профиль -->
+            <div id="auth-buttons" class="flex items-center gap-2 sm:gap-3">
+              <button onclick="openModal('login')" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800 transition">
+                Войти
+              </button>
+              <button onclick="openModal('reg')" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/30 transition">
+                Регистрация
+              </button>
+            </div>
+
+            <div id="user-profile" class="hidden items-center gap-3">
+              <div class="flex items-center gap-2 bg-gray-800 border border-gray-700/80 px-3 py-1.5 rounded-xl">
+                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                <span id="user-name-display" class="font-bold text-sm text-gray-200"></span>
+              </div>
+              <button onclick="logout()" class="text-xs text-gray-400 hover:text-red-400 transition underline">
+                Выйти
+              </button>
+            </div>
           </div>
 
-          <div id="user-profile" class="hidden items-center gap-3">
-            <div class="flex items-center gap-2 bg-gray-800 border border-gray-700/80 px-3 py-1.5 rounded-xl">
-              <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-              <span id="user-name-display" class="font-bold text-sm text-gray-200"></span>
-            </div>
-            <button onclick="logout()" class="text-xs text-gray-400 hover:text-red-400 transition underline">
-              Выйти
-            </button>
-          </div>
         </div>
       </header>
 
@@ -135,11 +144,15 @@ app.get('/', (_req: Request, res: Response) => {
             </span>
             <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Добро пожаловать в GLEVEX</h1>
             <p class="text-gray-400 text-sm sm:text-base leading-relaxed">
-              Игровая платформа нового поколения. Зарегистрируйтесь прямо сейчас, чтобы первым получить доступ к запуску!
+              Игровая платформа нового поколения. Зарегистрируйтесь прямо сейчас, чтобы первым получить доступ к закрытому альфа-тесту!
             </p>
-            <div class="flex items-center justify-center md:justify-start gap-4 pt-2">
+            <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2">
               <button onclick="openModal('reg')" class="px-6 py-3 bg-red-600 hover:bg-red-500 font-bold rounded-xl shadow-xl shadow-red-600/30 transition transform hover:-translate-y-0.5">
                 Создать аккаунт
+              </button>
+              <button onclick="openLauncherModal()" class="px-6 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 font-bold rounded-xl transition flex items-center gap-2">
+                <span>📥 Скачать лаунчер</span>
+                <span class="text-[10px] bg-red-500/20 text-red-400 border border-red-500/30 px-1.5 py-0.5 rounded-full uppercase">Скоро</span>
               </button>
             </div>
           </div>
@@ -150,8 +163,8 @@ app.get('/', (_req: Request, res: Response) => {
 
         <!-- Фильтры категорий -->
         <section class="space-y-4">
-          <div class="sm:hidden">
-            <input type="text" id="search-input-mobile" oninput="filterGamesMobile()" placeholder="Поиск..." 
+          <div class="md:hidden">
+            <input type="text" id="search-input-mobile" oninput="filterGamesMobile()" placeholder="Поиск по платформам..." 
               class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-red-500">
           </div>
 
@@ -207,6 +220,59 @@ app.get('/', (_req: Request, res: Response) => {
               Продолжить
             </button>
           </form>
+        </div>
+      </div>
+
+      <!-- Модальное окно Лаунчера (Скоро запуск) -->
+      <div id="launcher-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-gray-900 border border-gray-800 p-6 sm:p-8 rounded-2xl w-full max-w-lg shadow-2xl relative space-y-6">
+          <button onclick="closeLauncherModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white text-2xl font-bold">&times;</button>
+
+          <!-- Шапка модалки -->
+          <div class="text-center space-y-2">
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold rounded-full uppercase tracking-wider">
+              <span>⏳</span> В разработке
+            </div>
+            <h3 class="text-2xl font-extrabold text-white">Лаунчер GLEVEX Client</h3>
+            <p class="text-xs text-gray-400">Быстрый доступ к играм, встроенный античит и авто-обновления</p>
+          </div>
+
+          <!-- Фичи будущей версии -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="bg-gray-800/60 border border-gray-800 p-3 rounded-xl text-center space-y-1">
+              <div class="text-2xl">⚡</div>
+              <div class="text-xs font-bold text-gray-200">Мгновенный старт</div>
+              <div class="text-[10px] text-gray-500">Запуск за 1 секунду</div>
+            </div>
+            <div class="bg-gray-800/60 border border-gray-800 p-3 rounded-xl text-center space-y-1">
+              <div class="text-2xl">🛡️</div>
+              <div class="text-xs font-bold text-gray-200">Античит G-Guard</div>
+              <div class="text-[10px] text-gray-500">Честная игра</div>
+            </div>
+            <div class="bg-gray-800/60 border border-gray-800 p-3 rounded-xl text-center space-y-1">
+              <div class="text-2xl">🔄</div>
+              <div class="text-xs font-bold text-gray-200">Авто-патчи</div>
+              <div class="text-[10px] text-gray-500">Без ручных скачиваний</div>
+            </div>
+          </div>
+
+          <!-- Поддерживаемые платформы -->
+          <div class="flex items-center justify-center gap-6 py-2 text-xs text-gray-400 border-y border-gray-800/80">
+            <span class="flex items-center gap-1.5">💻 Windows 10/11</span>
+            <span class="flex items-center gap-1.5">🍎 macOS</span>
+            <span class="flex items-center gap-1.5">🐧 Linux</span>
+          </div>
+
+          <!-- Заблокированная кнопка скачивания -->
+          <div class="space-y-3">
+            <button disabled class="w-full bg-gray-800 border border-gray-700 text-gray-400 cursor-not-allowed py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2">
+              <span>🔒</span>
+              <span>Загрузка недоступна (Ожидайте релиз)</span>
+            </button>
+            <p class="text-[11px] text-center text-gray-500">
+              Зарегистрируйте аккаунт на сайте, чтобы получить уведомление о старте альфа-теста!
+            </p>
+          </div>
         </div>
       </div>
 
@@ -297,6 +363,16 @@ app.get('/', (_req: Request, res: Response) => {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Модальное окно лаунчера
+        function openLauncherModal() {
+          document.getElementById('launcher-modal').classList.remove('hidden');
+        }
+
+        function closeLauncherModal() {
+          document.getElementById('launcher-modal').classList.add('hidden');
+        }
+
+        // Модальное окно входа / регистрации
         function openModal(mode) {
           currentAuthMode = mode;
           document.getElementById('auth-modal').classList.remove('hidden');
@@ -380,5 +456,7 @@ app.get('/', (_req: Request, res: Response) => {
     </html>
   `);
 });
+
+export default app;
 
 export default app;
