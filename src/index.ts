@@ -4,7 +4,7 @@ const app = express();
 app.use(express.json());
 
 // Прямая ссылка на ваш файл Glevex.zip в GitHub Releases
-const RELEASE_DOWNLOAD_URL = "https://github.com/zincenkogleb0105-ctrl/glevex/releases/latest/download/Glevex.zip";
+const RELEASE_DOWNLOAD_URL = "https://github.com/zincenkogleb0105-ctrl/glevex/releases/download/%23glevex/Glevex.zip";
 
 // Хранилище пользователей в оперативной памяти сервера
 const users: Record<string, string> = {};
