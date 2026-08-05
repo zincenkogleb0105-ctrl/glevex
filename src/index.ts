@@ -3,9 +3,10 @@ import express, { Request, Response } from 'express';
 const app = express();
 app.use(express.json());
 
-// Хранилище пользователей в памяти
+// Хранилище пользователей в оперативной памяти сервера
 const users: Record<string, string> = {};
 
+// Список игр пока пустой (без тестовых игр)
 interface Game {
   id: number;
   title: string;
@@ -16,18 +17,9 @@ interface Game {
   isHot?: boolean;
 }
 
-const gamesData: Game[] = [
-  { id: 1, title: "Mega Obby 1000+", rating: "92%", online: "12.4K", icon: "🧗‍♂️", category: "obby", isHot: true },
-  { id: 2, title: "Adopt Me! Clone", rating: "88%", online: "25.1K", icon: "🐶", category: "sim", isHot: true },
-  { id: 3, title: "Murder Mystery X", rating: "95%", online: "8.7K", icon: "🔪", category: "action", isHot: true },
-  { id: 4, title: "Tycoon Simulator", rating: "84%", online: "5.2K", icon: "🏗️", category: "sim" },
-  { id: 5, title: "Hide and Seek Extreme", rating: "90%", online: "3.9K", icon: "🙈", category: "action" },
-  { id: 6, title: "Speed Run 5", rating: "91%", online: "7.1K", icon: "⚡", category: "obby" },
-  { id: 7, title: "Tower of Hell 2", rating: "89%", online: "15.3K", icon: "🏰", category: "obby" },
-  { id: 8, title: "Anime Battle Arena", rating: "96%", online: "18.9K", icon: "⚔️", category: "action", isHot: true }
-];
+const gamesData: Game[] = [];
 
-// API Регистрации
+// API для регистрации
 app.post('/api/register', (req: Request, res: Response) => {
   const { username, password } = req.body;
   if (!username || !password) {
@@ -40,7 +32,7 @@ app.post('/api/register', (req: Request, res: Response) => {
   res.json({ success: true, message: "Аккаунт успешно создан!" });
 });
 
-// API Входа
+// API для входа
 app.post('/api/login', (req: Request, res: Response) => {
   const { username, password } = req.body;
   if (users[username] && users[username] === password) {
@@ -50,7 +42,7 @@ app.post('/api/login', (req: Request, res: Response) => {
   }
 });
 
-// API Получения списка игр
+// API получения списка игр
 app.get('/api/games', (_req: Request, res: Response) => {
   res.json(gamesData);
 });
@@ -65,7 +57,7 @@ app.get('/', (_req: Request, res: Response) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>GLEVEX — Игровая Платформа</title>
       
-      <!-- Исправленный Tailwind CDN -->
+      <!-- Исправленный CDN Tailwind CSS -->
       <script src="https://cdn.tailwindcss.com"></script>
       <script>
         tailwind.config = {
@@ -87,13 +79,14 @@ app.get('/', (_req: Request, res: Response) => {
     </head>
     <body class="min-h-screen flex flex-col justify-between selection:bg-red-500 selection:text-white">
       
-      <!-- Контейнер для всплывающих уведомлений -->
+      <!-- Уведомления (Toast) -->
       <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
       <!-- Шапка -->
       <header class="sticky top-0 z-40 border-b border-gray-800 glass">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
           
+          <!-- Логотип -->
           <div class="flex items-center gap-3 cursor-pointer" onclick="resetFilters()">
             <span class="text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-rose-500 to-orange-500">
               GLEVEX
@@ -103,13 +96,13 @@ app.get('/', (_req: Request, res: Response) => {
           <!-- Поиск -->
           <div class="flex-1 max-w-md hidden sm:block">
             <div class="relative">
-              <input type="text" id="search-input" oninput="filterGames()" placeholder="Поиск игр (Obby, Murder, Speed)..." 
+              <input type="text" id="search-input" oninput="filterGames()" placeholder="Поиск по платформе..." 
                 class="w-full bg-gray-900 border border-gray-700/80 rounded-xl px-4 py-2 pl-10 text-sm text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition">
               <span class="absolute left-3 top-2.5 text-gray-500 text-sm">🔍</span>
             </div>
           </div>
 
-          <!-- Кнопки Авторизации / Профиль -->
+          <!-- Кнопки Входа / Профиль -->
           <div id="auth-buttons" class="flex items-center gap-3">
             <button onclick="openModal('login')" class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800 transition">
               Войти
@@ -134,42 +127,38 @@ app.get('/', (_req: Request, res: Response) => {
       <!-- Главный Контент -->
       <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full space-y-10">
         
-        <!-- Hero Баннер Главной Игры -->
+        <!-- Hero Баннер Платформы -->
         <section class="relative rounded-2xl overflow-hidden bg-gradient-to-r from-red-950/60 via-purple-950/30 to-gray-900 border border-gray-800 p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
           <div class="space-y-4 max-w-xl text-center md:text-left">
             <span class="inline-block px-3 py-1 bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold rounded-full uppercase tracking-wider">
-              🔥 Топ игры недели
+              🚀 Скоро открытие
             </span>
-            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Mega Obby 1000+</h1>
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Добро пожаловать в GLEVEX</h1>
             <p class="text-gray-400 text-sm sm:text-base leading-relaxed">
-              Пройдите более 1000 полос препятствий вместе с друзьями! Новые чекпоинты и скины уже доступны.
+              Игровая платформа нового поколения. Зарегистрируйтесь прямо сейчас, чтобы первым получить доступ к запуску!
             </p>
             <div class="flex items-center justify-center md:justify-start gap-4 pt-2">
-              <button onclick="playGame('Mega Obby 1000+')" class="px-6 py-3 bg-red-600 hover:bg-red-500 font-bold rounded-xl shadow-xl shadow-red-600/30 transition transform hover:-translate-y-0.5 flex items-center gap-2">
-                <span>▶ Запустить игру</span>
+              <button onclick="openModal('reg')" class="px-6 py-3 bg-red-600 hover:bg-red-500 font-bold rounded-xl shadow-xl shadow-red-600/30 transition transform hover:-translate-y-0.5">
+                Создать аккаунт
               </button>
-              <div class="text-xs text-gray-400 text-left">
-                <p class="font-bold text-gray-200">👥 12.4K онлайн</p>
-                <p>👍 92% рейтинг</p>
-              </div>
             </div>
           </div>
-          <div class="text-8xl sm:text-9xl filter drop-shadow-[0_10px_25px_rgba(239,68,68,0.35)] animate-bounce duration-1000">
-            🧗‍♂️
+          <div class="text-8xl sm:text-9xl filter drop-shadow-[0_10px_25px_rgba(239,68,68,0.35)] animate-pulse">
+            🎮
           </div>
         </section>
 
-        <!-- Фильтры по категориям -->
+        <!-- Фильтры категорий -->
         <section class="space-y-4">
           <div class="sm:hidden">
-            <input type="text" id="search-input-mobile" oninput="filterGamesMobile()" placeholder="Поиск игр..." 
+            <input type="text" id="search-input-mobile" oninput="filterGamesMobile()" placeholder="Поиск..." 
               class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-red-500">
           </div>
 
           <div class="flex items-center justify-between flex-wrap gap-4 border-b border-gray-800/80 pb-4">
             <h2 class="text-2xl font-bold tracking-tight">Каталог игр</h2>
             
-            <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 no-scrollbar" id="category-buttons">
+            <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 no-scrollbar">
               <button onclick="setCategory('all')" data-cat="all" class="cat-btn px-4 py-1.5 rounded-lg text-xs font-bold bg-red-600 text-white transition">Все</button>
               <button onclick="setCategory('obby')" data-cat="obby" class="cat-btn px-4 py-1.5 rounded-lg text-xs font-bold bg-gray-800 hover:bg-gray-700 text-gray-300 transition">🧗 Obby</button>
               <button onclick="setCategory('action')" data-cat="action" class="cat-btn px-4 py-1.5 rounded-lg text-xs font-bold bg-gray-800 hover:bg-gray-700 text-gray-300 transition">⚔️ Экшен</button>
@@ -178,9 +167,9 @@ app.get('/', (_req: Request, res: Response) => {
           </div>
         </section>
 
-        <!-- Сетка игр -->
-        <section id="games-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
-          <!-- Карточки загружаются через JS -->
+        <!-- Пустой каталог -->
+        <section id="games-grid" class="w-full">
+          <!-- Загружается JS -->
         </section>
 
       </main>
@@ -227,35 +216,39 @@ app.get('/', (_req: Request, res: Response) => {
         let currentCategory = 'all';
         let currentAuthMode = 'reg';
 
-        // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', () => {
           loadGames();
           checkSession();
         });
 
-        // Загрузка списка игр с сервера
         async function loadGames() {
           try {
             const res = await fetch('/api/games');
             allGames = await res.json();
             renderGames(allGames);
           } catch (e) {
-            showToast('Ошибка загрузки каталога игр', 'error');
+            renderGames([]);
           }
         }
 
-        // Отрисовка сетки игр
         function renderGames(games) {
           const grid = document.getElementById('games-grid');
+          
           if (!games || games.length === 0) {
-            grid.innerHTML = \`<div class="col-span-full text-center py-12 text-gray-500">Игры не найдены</div>\`;
+            grid.innerHTML = \`
+              <div class="flex flex-col items-center justify-center py-16 text-center space-y-3 bg-gray-900/40 border border-gray-800/80 rounded-2xl w-full">
+                <div class="text-6xl mb-2 animate-bounce">⚡</div>
+                <h3 class="text-xl font-bold text-gray-200">Игр пока нет</h3>
+                <p class="text-sm text-gray-500 max-w-sm">Платформа GLEVEX готовится к запуску. Скоро здесь появятся первые игры!</p>
+              </div>
+            \`;
             return;
           }
 
+          grid.className = "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6";
           grid.innerHTML = games.map(game => \`
             <div onclick="playGame('\${game.title}')" class="group bg-gray-900 border border-gray-800/80 hover:border-red-500/50 rounded-2xl overflow-hidden shadow-lg hover:shadow-red-500/10 transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between">
               <div class="aspect-square bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-5xl relative group-hover:scale-105 transition-transform duration-300">
-                \${game.isHot ? '<span class="absolute top-2 right-2 bg-red-600 text-[10px] font-black uppercase px-2 py-0.5 rounded-full text-white shadow-md">HOT</span>' : ''}
                 \${game.icon}
               </div>
               <div class="p-3.5 space-y-1 bg-gray-900">
@@ -269,7 +262,6 @@ app.get('/', (_req: Request, res: Response) => {
           \`).join('');
         }
 
-        // Фильтрация игр
         function filterGames() {
           const query = (document.getElementById('search-input')?.value || '').toLowerCase();
           const filtered = allGames.filter(g => {
@@ -305,11 +297,10 @@ app.get('/', (_req: Request, res: Response) => {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Модальное окно
         function openModal(mode) {
           currentAuthMode = mode;
           document.getElementById('auth-modal').classList.remove('hidden');
-          document.getElementById('modal-subtitle').innerText = mode === 'reg' ? 'Создайте аккаунт GLEVEX за 10 секунд' : 'Войдите в свой профиль GLEVEX';
+          document.getElementById('modal-subtitle').innerText = mode === 'reg' ? 'Создайте аккаунт GLEVEX' : 'Войдите в свой профиль';
           document.getElementById('modal-submit-btn').innerText = mode === 'reg' ? 'Создать аккаунт' : 'Войти';
         }
 
@@ -317,7 +308,6 @@ app.get('/', (_req: Request, res: Response) => {
           document.getElementById('auth-modal').classList.add('hidden');
         }
 
-        // Авторизация
         async function handleAuthSubmit(event) {
           event.preventDefault();
           const username = document.getElementById('auth-username').value;
@@ -341,15 +331,13 @@ app.get('/', (_req: Request, res: Response) => {
               showToast(data.message, 'error');
             }
           } catch (e) {
-            showToast('Ошибка сети. Попробуйте еще раз.', 'error');
+            showToast('Ошибка сети', 'error');
           }
         }
 
         function checkSession() {
           const user = localStorage.getItem('glevex_user');
-          if (user) {
-            updateUserUI(user);
-          }
+          if (user) updateUserUI(user);
         }
 
         function updateUserUI(username) {
@@ -368,11 +356,6 @@ app.get('/', (_req: Request, res: Response) => {
           showToast('Вы вышли из системы', 'info');
         }
 
-        function playGame(title) {
-          showToast('🎮 Запуск лаунчера GLEVEX: ' + title, 'info');
-        }
-
-        // Уведомления (Toast)
         function showToast(message, type = 'info') {
           const container = document.getElementById('toast-container');
           const toast = document.createElement('div');
@@ -383,7 +366,7 @@ app.get('/', (_req: Request, res: Response) => {
             info: 'bg-gray-800 border border-gray-700'
           };
 
-          toast.className = \`\${bgColors[type] || bgColors.info} text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl transition-all duration-300 pointer-events-auto flex items-center gap-2 animate-bounce\`;
+          toast.className = \`\${bgColors[type] || bgColors.info} text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl transition-all duration-300 pointer-events-auto flex items-center gap-2\`;
           toast.innerHTML = \`<span>\${message}</span>\`;
 
           container.appendChild(toast);
